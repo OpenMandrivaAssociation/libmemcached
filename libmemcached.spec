@@ -4,7 +4,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.5
+Version:	0.6
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -87,11 +87,18 @@ rm -rf %{buildroot}
 %{_bindir}/memrm
 %{_bindir}/memstat
 %{_bindir}/memslap
+%{_mandir}/man1/memcat.1*
+%{_mandir}/man1/memcp.1*
+%{_mandir}/man1/memflush.1*
+%{_mandir}/man1/memrm.1*
+%{_mandir}/man1/memslap.1*
+%{_mandir}/man1/memstat.1*
 
 %files -n %{libname}
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
 %{_libdir}/*.so.*
+%{_mandir}/man3/libmemcached.3*
 
 %files -n %{develname}
 %defattr(-,root,root)
@@ -100,4 +107,32 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.a
 %{_libdir}/*.la
-
+%{_mandir}/man3/libmemcached_examples.3*
+%{_mandir}/man3/memcached_add.3*
+%{_mandir}/man3/memcached_behavior_get.3*
+%{_mandir}/man3/memcached_behavior_set.3*
+%{_mandir}/man3/memcached_create.3*
+%{_mandir}/man3/memcached_decrement.3*
+%{_mandir}/man3/memcached_delete.3*
+%{_mandir}/man3/memcached_fetch.3*
+%{_mandir}/man3/memcached_free.3*
+%{_mandir}/man3/memcached_get.3*
+%{_mandir}/man3/memcached_increment.3*
+%{_mandir}/man3/memcached_mget.3*
+%{_mandir}/man3/memcached_quit.3*
+%{_mandir}/man3/memcached_replace.3*
+%{_mandir}/man3/memcached_server_add.3*
+%{_mandir}/man3/memcached_server_count.3*
+%{_mandir}/man3/memcached_server_list.3*
+%{_mandir}/man3/memcached_server_list_append.3*
+%{_mandir}/man3/memcached_server_list_count.3*
+%{_mandir}/man3/memcached_server_list_free.3*
+%{_mandir}/man3/memcached_server_push.3*
+%{_mandir}/man3/memcached_servers_parse.3*
+%{_mandir}/man3/memcached_set.3*
+%{_mandir}/man3/memcached_stat.3*
+%{_mandir}/man3/memcached_stat_get_keys.3*
+%{_mandir}/man3/memcached_stat_get_value.3*
+%{_mandir}/man3/memcached_stat_servername.3*
+%{_mandir}/man3/memcached_strerror.3*
+%{_mandir}/man3/memcached_verbosity.3*
