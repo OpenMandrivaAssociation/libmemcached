@@ -4,7 +4,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.6
+Version:	0.7
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -136,3 +136,4 @@ rm -rf %{buildroot}
 %{_mandir}/man3/memcached_stat_servername.3*
 %{_mandir}/man3/memcached_strerror.3*
 %{_mandir}/man3/memcached_verbosity.3*
+%{_mandir}/man3/memcached_clone.3*
