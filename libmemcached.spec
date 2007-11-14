@@ -5,7 +5,7 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	0.7
-Release:	%mkrel 1
+Release:	%mkrel 2
 Group:		System/Libraries
 License:	BSD
 URL:		http://tangent.org/552/libmemcached.html
