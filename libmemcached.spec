@@ -1,11 +1,11 @@
-%define	major 0
+%define	major 1
 %define libname %mklibname memcached %{major}
 %define develname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.7
-Release:	%mkrel 2
+Version:	0.9
+Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
 URL:		http://tangent.org/552/libmemcached.html
@@ -47,6 +47,7 @@ Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	memcached-devel = %{version}-%{release}
 Obsoletes:	memcached-devel
+Conflicts:	%{mklibname memcached 0 -d}
 
 %description -n	%{develname}
 libmemcached is a C client library to interface to a memcached server
@@ -107,18 +108,23 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.a
 %{_libdir}/*.la
+%{_libdir}/pkgconfig/*.pc
 %{_mandir}/man3/libmemcached_examples.3*
 %{_mandir}/man3/memcached_add.3*
+%{_mandir}/man3/memcached_append.3*
 %{_mandir}/man3/memcached_behavior_get.3*
 %{_mandir}/man3/memcached_behavior_set.3*
+%{_mandir}/man3/memcached_clone.3*
 %{_mandir}/man3/memcached_create.3*
 %{_mandir}/man3/memcached_decrement.3*
 %{_mandir}/man3/memcached_delete.3*
 %{_mandir}/man3/memcached_fetch.3*
+%{_mandir}/man3/memcached_fetch_result.3*
 %{_mandir}/man3/memcached_free.3*
 %{_mandir}/man3/memcached_get.3*
 %{_mandir}/man3/memcached_increment.3*
 %{_mandir}/man3/memcached_mget.3*
+%{_mandir}/man3/memcached_prepend.3*
 %{_mandir}/man3/memcached_quit.3*
 %{_mandir}/man3/memcached_replace.3*
 %{_mandir}/man3/memcached_server_add.3*
@@ -136,4 +142,3 @@ rm -rf %{buildroot}
 %{_mandir}/man3/memcached_stat_servername.3*
 %{_mandir}/man3/memcached_strerror.3*
 %{_mandir}/man3/memcached_verbosity.3*
-%{_mandir}/man3/memcached_clone.3*
