@@ -47,7 +47,6 @@ Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	memcached-devel = %{version}-%{release}
 Obsoletes:	memcached-devel
-Conflicts:	%{mklibname memcached 0 -d}
 
 %description -n	%{develname}
 libmemcached is a C client library to interface to a memcached server
