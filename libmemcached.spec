@@ -4,7 +4,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.9
+Version:	0.10
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -83,12 +83,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_bindir}/memcat
 %{_bindir}/memcp
+%{_bindir}/memerror
 %{_bindir}/memflush
 %{_bindir}/memrm
-%{_bindir}/memstat
 %{_bindir}/memslap
+%{_bindir}/memstat
 %{_mandir}/man1/memcat.1*
 %{_mandir}/man1/memcp.1*
+%{_mandir}/man1/memerror.1*
 %{_mandir}/man1/memflush.1*
 %{_mandir}/man1/memrm.1*
 %{_mandir}/man1/memslap.1*
@@ -113,6 +115,7 @@ rm -rf %{buildroot}
 %{_mandir}/man3/memcached_append.3*
 %{_mandir}/man3/memcached_behavior_get.3*
 %{_mandir}/man3/memcached_behavior_set.3*
+%{_mandir}/man3/memcached_cas.3*
 %{_mandir}/man3/memcached_clone.3*
 %{_mandir}/man3/memcached_create.3*
 %{_mandir}/man3/memcached_decrement.3*
