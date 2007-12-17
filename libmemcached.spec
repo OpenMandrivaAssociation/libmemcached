@@ -12,7 +12,6 @@ URL:		http://tangent.org/552/libmemcached.html
 Source0:	http://download.tangent.org/%{name}-%{version}.tar.gz
 BuildRequires:	libtool
 BuildRequires:	autoconf2.5
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 libmemcached is a C client library to interface to a memcached server
