@@ -15,11 +15,10 @@ BuildRequires:	autoconf2.5
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
-libmemcached is a C client library to interface to a memcached server
-(http://danga.com/memcached). It has been designed to be light on memory usage,
-thread safe, and to provide full access to server side methods. It also
-implements several command line tools:memcat, memflush, memrm, memstat, and
-memslap (load generation).
+libmemcached is a C client library to interface to a memcached server.
+It has been designed to be light on memory usage, thread safe, and to provide
+full access to server side methods. It also implements several command line
+tools:memcat, memflush, memrm, memstat, and memslap (load generation).
 
 It also implements several command line tools:
 
@@ -34,11 +33,10 @@ Summary:	A memcached C library
 Group:          System/Libraries
 
 %description -n	%{libname}
-libmemcached is a C client library to interface to a memcached server
-(http://danga.com/memcached). It has been designed to be light on memory usage,
-thread safe, and to provide full access to server side methods. It also
-implements several command line tools:memcat, memflush, memrm, memstat, and
-memslap (load generation).
+libmemcached is a C client library to interface to a memcached server.
+It has been designed to be light on memory usage, thread safe, and to provide
+full access to server side methods. It also implements several command line
+tools:memcat, memflush, memrm, memstat, and memslap (load generation).
 
 %package -n	%{develname}
 Summary:	Static library and header files for the libmemcached library
@@ -49,11 +47,10 @@ Provides:	memcached-devel = %{version}-%{release}
 Obsoletes:	memcached-devel
 
 %description -n	%{develname}
-libmemcached is a C client library to interface to a memcached server
-(http://danga.com/memcached). It has been designed to be light on memory usage,
-thread safe, and to provide full access to server side methods. It also
-implements several command line tools:memcat, memflush, memrm, memstat, and
-memslap (load generation).
+libmemcached is a C client library to interface to a memcached server.
+It has been designed to be light on memory usage, thread safe, and to provide
+full access to server side methods. It also implements several command line
+tools:memcat, memflush, memrm, memstat, and memslap (load generation).
 
 This package contains the static libmemcached library and its header files.
 
