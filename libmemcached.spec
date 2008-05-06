@@ -1,10 +1,10 @@
-%define	major 1
+%define	major 2
 %define libname %mklibname memcached %{major}
 %define develname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.19
+Version:	0.20
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -31,6 +31,7 @@ memslap - Generate testing loads on a memcached cluster
 %package -n	%{libname}
 Summary:	A memcached C library
 Group:          System/Libraries
+Obsoletes:	%mklibname memcached 1
 
 %description -n	%{libname}
 libmemcached is a C client library to interface to a memcached server.
@@ -59,14 +60,11 @@ This package contains the static libmemcached library and its header files.
 %setup -q -n %{name}-%{version}
 
 %build
-
 %configure2_5x
-
 %make
 
 %install
 rm -rf %{buildroot}
-
 %makeinstall_std
 
 %post -n %{libname} -p /sbin/ldconfig
@@ -96,7 +94,7 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{major}*
 %{_mandir}/man3/libmemcached.3*
 
 %files -n %{develname}
