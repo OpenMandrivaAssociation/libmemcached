@@ -5,7 +5,7 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	0.21
-Release:	%mkrel 1
+Release:	%mkrel 2
 Group:		System/Libraries
 License:	BSD
 URL:		http://tangent.org/552/libmemcached.html
@@ -31,7 +31,6 @@ memslap - Generate testing loads on a memcached cluster
 %package -n	%{libname}
 Summary:	A memcached C library
 Group:          System/Libraries
-Obsoletes:	%mklibname memcached 1
 
 %description -n	%{libname}
 libmemcached is a C client library to interface to a memcached server.
