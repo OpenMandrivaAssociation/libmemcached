@@ -60,7 +60,9 @@ This package contains the static libmemcached library and its header files.
 %setup -q -n %{name}-%{version}
 
 %build
-%configure2_5x
+%configure2_5x \
+    --with-memcached=%{_sbindir}/memcached
+  
 %make
 
 # (oe Fri Jan 30 06:59:18 CET 2009) tests requires root permissions, but don't pass anyway...
