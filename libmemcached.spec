@@ -4,7 +4,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.25
+Version:	0.26
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -12,6 +12,7 @@ URL:		http://tangent.org/552/libmemcached.html
 Source0:	http://download.tangent.org/%{name}-%{version}.tar.gz
 BuildRequires:	libtool
 BuildRequires:	autoconf2.5
+BuildRequires:	memcached
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -61,6 +62,10 @@ This package contains the static libmemcached library and its header files.
 %build
 %configure2_5x
 %make
+
+# (oe Fri Jan 30 06:59:18 CET 2009) tests requires root permissions, but don't pass anyway...
+#%%check
+#make test
 
 %install
 rm -rf %{buildroot}
