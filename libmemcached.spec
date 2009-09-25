@@ -1,4 +1,4 @@
-%define	major 2
+%define	major 3
 %define libname %mklibname memcached %{major}
 %define develname %mklibname memcached -d
 
