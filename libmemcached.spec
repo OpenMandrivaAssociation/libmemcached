@@ -88,6 +88,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
+%{_bindir}/memcapable
 %{_bindir}/memcat
 %{_bindir}/memcp
 %{_bindir}/memdump
@@ -96,6 +97,7 @@ rm -rf %{buildroot}
 %{_bindir}/memrm
 %{_bindir}/memslap
 %{_bindir}/memstat
+%{_mandir}/man1/memcapable.1*
 %{_mandir}/man1/memcat.1*
 %{_mandir}/man1/memcp.1*
 %{_mandir}/man1/memdump.1*
