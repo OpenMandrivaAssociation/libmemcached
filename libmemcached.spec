@@ -1,7 +1,9 @@
 %define	major 3
 %define	util_major 0
+%define	protocol_major 0
 %define libname %mklibname memcached %{major}
 %define util_libname %mklibname memcachedutil %{util_major}
+%define protocol_libname %mklibname memcachedprotocol %{protocol_major}
 %define develname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
@@ -51,6 +53,15 @@ libmemcached is a C client library to interface to a memcached server. It has
 been designed to be light on memory usage, thread safe, and to provide
 full access to server side methods.
 
+%package -n	%{protocol_libname}
+Summary:	A memcached C library
+Group:          System/Libraries
+
+%description -n	%{protocol_libname}
+libmemcached is a C client library to interface to a memcached server. It has
+been designed to be light on memory usage, thread safe, and to provide
+full access to server side methods.
+
 %package -n	%{develname}
 Summary:	Static library and header files for the libmemcached library
 Group:		Development/C
@@ -88,11 +99,18 @@ rm -rf %{buildroot}
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
+
+%postun -n %{libname} -p /sbin/ldconfig
+
+%post -n %{util_libname} -p /sbin/ldconfig
+
+%postun -n %{util_libname} -p /sbin/ldconfig
+
+%post -n %{protocol_libname} -p /sbin/ldconfig
+
+%postun -n %{protocol_libname} -p /sbin/ldconfig
 %endif
 
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -127,6 +145,10 @@ rm -rf %{buildroot}
 %files -n %{util_libname}
 %defattr(-,root,root)
 %{_libdir}/libmemcachedutil.so.%{util_major}*
+
+%files -n %{protocol_libname}
+%defattr(-,root,root)
+%{_libdir}/libmemcachedprotocol.so.%{protocol_major}*
 
 %files -n %{develname}
 %defattr(-,root,root)
