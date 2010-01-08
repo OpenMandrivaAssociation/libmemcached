@@ -20,6 +20,7 @@ BuildRequires:	libtool
 BuildRequires:	autoconf2.5
 BuildRequires:	memcached
 BuildRequires:	libevent-devel
+BuildRequires:	perl-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
