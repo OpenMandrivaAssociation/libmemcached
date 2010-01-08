@@ -1,14 +1,16 @@
 %define	major 3
 %define	util_major 0
 %define	protocol_major 0
+%define	hashkit_major 0
 %define libname %mklibname memcached %{major}
 %define util_libname %mklibname memcachedutil %{util_major}
 %define protocol_libname %mklibname memcachedprotocol %{protocol_major}
+%define hashkit_libname %mklibname memcachedhashkit %{protocol_major}
 %define develname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.35
+Version:	0.36
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -17,6 +19,7 @@ Source0:	http://download.tangent.org/%{name}-%{version}.tar.gz
 BuildRequires:	libtool
 BuildRequires:	autoconf2.5
 BuildRequires:	memcached
+BuildRequires:	libevent-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -62,10 +65,22 @@ libmemcached is a C client library to interface to a memcached server. It has
 been designed to be light on memory usage, thread safe, and to provide
 full access to server side methods.
 
+%package -n	%{hashkit_libname}
+Summary:	A memcached C library
+Group:          System/Libraries
+
+%description -n	%{hashkit_libname}
+libmemcached is a C client library to interface to a memcached server. It has
+been designed to be light on memory usage, thread safe, and to provide
+full access to server side methods.
+
 %package -n	%{develname}
 Summary:	Static library and header files for the libmemcached library
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
+Requires:	%{util_libname} = %{version}-%{release}
+Requires:	%{protocol_libname} = %{version}-%{release}
+Requires:	%{hashkit_libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	memcached-devel = %{version}-%{release}
 Obsoletes:	memcached-devel
@@ -84,8 +99,10 @@ This package contains the static libmemcached library and its header files.
 %build
 autoreconf -fis
 %configure2_5x \
+    --enable-static \
+    --enable-shared \
     --with-memcached=%{_sbindir}/memcached
-  
+
 %make
 
 # (oe Fri Jan 30 06:59:18 CET 2009) tests requires root permissions, but don't pass anyway...
@@ -109,6 +126,10 @@ rm -rf %{buildroot}
 %post -n %{protocol_libname} -p /sbin/ldconfig
 
 %postun -n %{protocol_libname} -p /sbin/ldconfig
+
+%post -n %{hashkit_libname} -p /sbin/ldconfig
+
+%postun -n %{hashkit_libname} -p /sbin/ldconfig
 %endif
 
 
@@ -145,18 +166,25 @@ rm -rf %{buildroot}
 %files -n %{util_libname}
 %defattr(-,root,root)
 %{_libdir}/libmemcachedutil.so.%{util_major}*
+%{_mandir}/man3/libmemcachedutil.3*
 
 %files -n %{protocol_libname}
 %defattr(-,root,root)
 %{_libdir}/libmemcachedprotocol.so.%{protocol_major}*
 
+%files -n %{hashkit_libname}
+%defattr(-,root,root)
+%{_libdir}/libhashkit.so.%{hashkit_major}*
+
 %files -n %{develname}
 %defattr(-,root,root)
 %dir %{_includedir}/%{name}
+%dir %{_includedir}/libhashkit
 %{_includedir}/%{name}/*
+%{_includedir}/libhashkit/*
 %{_libdir}/*.so
-%{_libdir}/*.a
-%{_libdir}/*.la
+%{_libdir}/*.*a
 %{_libdir}/pkgconfig/*.pc
 %exclude %{_mandir}/man3/libmemcached.3*
+%exclude %{_mandir}/man3/libmemcachedutil.3*
 %{_mandir}/man3/*
