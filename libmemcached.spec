@@ -1,4 +1,4 @@
-%define	major 3
+%define	major 4
 %define	util_major 0
 %define	protocol_major 0
 %define	hashkit_major 0
