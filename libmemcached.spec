@@ -10,14 +10,12 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.37
+Version:	0.38
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
 URL:		http://tangent.org/552/libmemcached.html
 Source0:	http://download.tangent.org/%{name}-%{version}.tar.gz
-BuildRequires:	libtool
-BuildRequires:	autoconf2.5
 BuildRequires:	memcached
 BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
@@ -94,11 +92,9 @@ full access to server side methods.
 This package contains the static libmemcached library and its header files.
 
 %prep
-
 %setup -q -n %{name}-%{version}
 
 %build
-autoreconf -fis
 %configure2_5x \
     --enable-static \
     --enable-shared \
