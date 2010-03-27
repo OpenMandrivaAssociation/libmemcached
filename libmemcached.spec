@@ -97,7 +97,7 @@ This package contains the static libmemcached library and its header files.
 %configure2_5x \
     --enable-static \
     --enable-shared \
-    --with-memcached=%{_sbindir}/memcached
+    --with-memcached=%{_bindir}/memcached
 
 %make
 
