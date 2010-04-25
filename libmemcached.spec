@@ -14,8 +14,8 @@ Version:	0.40
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
-URL:		http://tangent.org/552/libmemcached.html
-Source0:	http://download.tangent.org/%{name}-%{version}.tar.gz
+URL:		http://libmemcached.org/
+Source0:	http://code.launchpad.net/libmemcached/1.0/%version/+download/%name-%version.tar.gz
 BuildRequires:	memcached
 BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
