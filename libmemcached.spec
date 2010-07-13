@@ -100,7 +100,7 @@ This package contains the static libmemcached library and its header files.
     --enable-shared \
     --with-memcached=%{_bindir}/memcached
 
-%make
+%make LIBSASL=-lsasl2
 
 # (oe Fri Jan 30 06:59:18 CET 2009) tests requires root permissions, but don't pass anyway...
 #%%check
