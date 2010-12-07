@@ -94,6 +94,10 @@ This package contains the static libmemcached library and its header files.
 %prep
 %setup -q -n %{name}-%{version}
 
+# make the tests work
+me=`id -nu`
+perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
+
 %build
 %configure2_5x \
     --enable-static \
@@ -102,7 +106,8 @@ This package contains the static libmemcached library and its header files.
 
 %make LIBSASL=-lsasl2
 
-# (oe Fri Jan 30 06:59:18 CET 2009) tests requires root permissions, but don't pass anyway...
+# (oe ) barfs at:
+# Assertion failed in tests/mem_functions.c:5946: rc == MEMCACHED_TIMEOUT
 #%%check
 #make test
 
