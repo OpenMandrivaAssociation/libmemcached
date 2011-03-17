@@ -10,7 +10,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.47
+Version:	0.48
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
