@@ -1,7 +1,7 @@
-%define	major 6
-%define	util_major 1
+%define	major 7
+%define	util_major 2
 %define	protocol_major 0
-%define	hashkit_major 0
+%define	hashkit_major 1
 %define libname %mklibname memcached %{major}
 %define util_libname %mklibname memcachedutil %{util_major}
 %define protocol_libname %mklibname memcachedprotocol %{protocol_major}
@@ -149,6 +149,8 @@ rm -rf %{buildroot}
 %{_bindir}/memrm
 %{_bindir}/memslap
 %{_bindir}/memstat
+%{_bindir}/memaslap
+%{_bindir}/memparse
 %{_mandir}/man1/memcapable.1*
 %{_mandir}/man1/memcat.1*
 %{_mandir}/man1/memcp.1*
@@ -157,6 +159,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/memflush.1*
 %{_mandir}/man1/memrm.1*
 %{_mandir}/man1/memslap.1*
+%{_mandir}/man1/memaslap.1*
 %{_mandir}/man1/memstat.1*
 
 %files -n %{libname}
