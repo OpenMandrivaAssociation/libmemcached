@@ -5,7 +5,7 @@
 %define libname %mklibname memcached %{major}
 %define util_libname %mklibname memcachedutil %{util_major}
 %define protocol_libname %mklibname memcachedprotocol %{protocol_major}
-%define hashkit_libname %mklibname memcachedhashkit %{protocol_major}
+%define hashkit_libname %mklibname memcachedhashkit %{hashkit_major}
 %define develname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
