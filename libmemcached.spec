@@ -1,4 +1,4 @@
-%define	major 7
+%define	major 8
 %define	util_major 2
 %define	protocol_major 0
 %define	hashkit_major 1
@@ -10,7 +10,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.49
+Version:	0.50
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
@@ -102,6 +102,7 @@ perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 %configure2_5x \
     --enable-static \
     --enable-shared \
+    --enable-memaslap \
     --with-memcached=%{_bindir}/memcached
 
 %make LIBSASL=-lsasl2
@@ -115,6 +116,11 @@ perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 rm -rf %{buildroot}
 
 %makeinstall_std
+
+# (oe) avoid pulling 32 bit libraries on 64 bit arch
+%if "%{_lib}" == "lib64"
+perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/pkgconfig/*.pc
+%endif
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
