@@ -21,6 +21,7 @@ BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
 BuildRequires:	libsasl-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Patch0:		libmemcached-0.51-gcc4.6.patch
 
 %description
 libmemcached is a C client library to interface to a memcached server. It has
@@ -95,6 +96,7 @@ This package contains the static libmemcached library and its header files.
 %setup -q -n %{name}-%{version}
 
 # make the tests work
+%patch0 -p1
 me=`id -nu`
 perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
