@@ -10,34 +10,36 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	0.51
+Version:	1.0.2
 Release:	%mkrel 1
 Group:		System/Libraries
 License:	BSD
 URL:		http://libmemcached.org/
-Source0:	http://code.launchpad.net/libmemcached/1.0/%version/+download/%name-%version.tar.gz
-BuildRequires:	memcached
+Source0:	http://code.launchpad.net/libmemcached/1.0/%version/+download/%{name}-%{version}-no_hsieh.tar.gz
+Patch0:		libmemcached-1.0.2-no_pandora_print_callstack.diff
+BuildRequires:	automake autoconf libtool
+BuildRequires:	memcached >= 1.4.9
 BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
 BuildRequires:	libsasl-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Patch0:		libmemcached-0.51-gcc4.6.patch
 
 %description
 libmemcached is a C client library to interface to a memcached server. It has
 been designed to be light on memory usage, thread safe, and to provide full
 access to server side methods. It also implements several command line tools:
 
-memcapable - Check memcached server capabilites
-memcat - Copy the value of a key to standard output
+memcat - Cat a set of key values to stdout
 memcp - Copy a set of files to a memcached cluster
 memdump - Dump all values from one or many servers
 memerror - Translate a memcached errror code into a string
-memflush - Flush the contents of your servers
-memrm - Remove a key(s) from the serrver
-memslap - Generate testing loads on a memcached cluster
-memstat - Dump the stats of your servers to standard output
+memexist - Erase a key or set of keys from a memcached cluster
+memflush - Erase all data in a server of memcached servers
+memping - Ping a server to see if it is alive
+memrm - Erase a key or set of keys from a memcached cluster
+memslap - Generates a load against a memcached custer of servers
 memstat - Output the state of a memcached cluster
+memtouch - Update the expiration value of an alreasy existing value in the sever
 
 %package -n	%{libname}
 Summary:	A memcached C library
@@ -93,16 +95,25 @@ full access to server side methods.
 This package contains the static libmemcached library and its header files.
 
 %prep
+
 %setup -q -n %{name}-%{version}
+# clients/ms_sigsegv.c:41: undefined reference to `pandora_print_callstack'
+%patch0 -p0
+
+# invalid license, according to redhat
+if [ -f libhashkit/hsieh.cc ]; then
+    echo "the libhashkit/hsieh.cc file was found, you have to remove it..."
+    exit 1
+fi
 
 # make the tests work
-%patch0 -p1
 me=`id -nu`
 perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
 %build
+
 %configure2_5x \
-    --enable-static \
+    --disable-static \
     --enable-shared \
     --enable-memaslap \
     --with-memcached=%{_bindir}/memcached
@@ -117,48 +128,36 @@ perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 %install
 rm -rf %{buildroot}
 
-%makeinstall_std
+# weird makefile poo
+make DESTDIR=%{buildroot} install-exec-am install-data-am
 
 # (oe) avoid pulling 32 bit libraries on 64 bit arch
 %if "%{_lib}" == "lib64"
 perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/pkgconfig/*.pc
 %endif
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-
-%postun -n %{libname} -p /sbin/ldconfig
-
-%post -n %{util_libname} -p /sbin/ldconfig
-
-%postun -n %{util_libname} -p /sbin/ldconfig
-
-%post -n %{protocol_libname} -p /sbin/ldconfig
-
-%postun -n %{protocol_libname} -p /sbin/ldconfig
-
-%post -n %{hashkit_libname} -p /sbin/ldconfig
-
-%postun -n %{hashkit_libname} -p /sbin/ldconfig
-%endif
-
+# cleanup
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
+%{_bindir}/memaslap
 %{_bindir}/memcapable
 %{_bindir}/memcat
 %{_bindir}/memcp
 %{_bindir}/memdump
 %{_bindir}/memerror
+%{_bindir}/memexist
 %{_bindir}/memflush
+%{_bindir}/memparse
+%{_bindir}/memping
 %{_bindir}/memrm
 %{_bindir}/memslap
 %{_bindir}/memstat
-%{_bindir}/memaslap
-%{_bindir}/memparse
+%{_bindir}/memtouch
 %{_mandir}/man1/memcapable.1*
 %{_mandir}/man1/memcat.1*
 %{_mandir}/man1/memcp.1*
@@ -191,12 +190,19 @@ rm -rf %{buildroot}
 
 %files -n %{develname}
 %defattr(-,root,root)
-%dir %{_includedir}/%{name}
 %dir %{_includedir}/libhashkit
-%{_includedir}/%{name}/*
+%dir %{_includedir}/libhashkit-1.0
+%dir %{_includedir}/libmemcached
+%dir %{_includedir}/libmemcached-1.0
+%dir %{_includedir}/libmemcachedprotocol-0.0
+%dir %{_includedir}/libmemcachedutil-1.0
 %{_includedir}/libhashkit/*
+%{_includedir}/libhashkit-1.0/*
+%{_includedir}/libmemcached/*
+%{_includedir}/libmemcached-1.0/*
+%{_includedir}/libmemcachedprotocol-0.0/*
+%{_includedir}/libmemcachedutil-1.0/*
 %{_libdir}/*.so
-%{_libdir}/*.*a
 %{_libdir}/pkgconfig/*.pc
 %exclude %{_mandir}/man3/libmemcached.3*
 %exclude %{_mandir}/man3/libmemcachedutil.3*
