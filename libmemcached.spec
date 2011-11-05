@@ -111,6 +111,8 @@ me=`id -nu`
 perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
 %build
+export LIBSASL="-lsasl2"
+export PTHREAD_LIBS="-lpthread"
 
 %configure2_5x \
     --disable-static \
@@ -118,7 +120,7 @@ perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
     --enable-memaslap \
     --with-memcached=%{_bindir}/memcached
 
-%make LIBSASL=-lsasl2
+%make LIBSASL="-lsasl2" PTHREAD_LIBS="-lpthread"
 
 # (oe ) barfs at:
 # Assertion failed in tests/mem_functions.c:5946: rc == MEMCACHED_TIMEOUT
