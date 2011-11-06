@@ -11,7 +11,7 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	1.0.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 Group:		System/Libraries
 License:	BSD
 URL:		http://libmemcached.org/
@@ -22,6 +22,7 @@ BuildRequires:	memcached >= 1.4.9
 BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
 BuildRequires:	libsasl-devel
+BuildRequires:	pkgconfig
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -118,7 +119,8 @@ export PTHREAD_LIBS="-lpthread"
     --disable-static \
     --enable-shared \
     --enable-memaslap \
-    --with-memcached=%{_bindir}/memcached
+    --with-memcached=%{_bindir}/memcached \
+    --with-memcached_sasl=%{_bindir}/memcached
 
 %make LIBSASL="-lsasl2" PTHREAD_LIBS="-lpthread"
 
@@ -135,7 +137,7 @@ make DESTDIR=%{buildroot} install-exec-am install-data-am
 
 # (oe) avoid pulling 32 bit libraries on 64 bit arch
 %if "%{_lib}" == "lib64"
-perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/*.la %{buildroot}%{_libdir}/pkgconfig/*.pc
+perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %endif
 
 # cleanup
