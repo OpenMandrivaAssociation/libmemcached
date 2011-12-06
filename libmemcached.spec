@@ -11,7 +11,7 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	1.0.2
-Release:	%mkrel 2
+Release:	3
 Group:		System/Libraries
 License:	BSD
 URL:		http://libmemcached.org/
@@ -23,7 +23,6 @@ BuildRequires:	libevent-devel
 BuildRequires:	perl-devel
 BuildRequires:	libsasl-devel
 BuildRequires:	pkgconfig
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 libmemcached is a C client library to interface to a memcached server. It has
@@ -143,11 +142,7 @@ perl -pi -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.p
 # cleanup
 rm -f %{buildroot}%{_libdir}/*.*a
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %{_bindir}/memaslap
 %{_bindir}/memcapable
 %{_bindir}/memcat
@@ -174,26 +169,21 @@ rm -rf %{buildroot}
 %{_mandir}/man1/memstat.1*
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
 %{_libdir}/*.so.%{major}*
 %{_mandir}/man3/libmemcached.3*
 
 %files -n %{util_libname}
-%defattr(-,root,root)
 %{_libdir}/libmemcachedutil.so.%{util_major}*
 %{_mandir}/man3/libmemcachedutil.3*
 
 %files -n %{protocol_libname}
-%defattr(-,root,root)
 %{_libdir}/libmemcachedprotocol.so.%{protocol_major}*
 
 %files -n %{hashkit_libname}
-%defattr(-,root,root)
 %{_libdir}/libhashkit.so.%{hashkit_major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %dir %{_includedir}/libhashkit
 %dir %{_includedir}/libhashkit-1.0
 %dir %{_includedir}/libmemcached
