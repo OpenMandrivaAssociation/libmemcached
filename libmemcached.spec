@@ -1,4 +1,4 @@
-%define	major 8
+%define	major 9
 %define	util_major 2
 %define	protocol_major 0
 %define	hashkit_major 1
@@ -10,8 +10,8 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	1.0.2
-Release:	3
+Version:	1.0.4
+Release:	1
 Group:		System/Libraries
 License:	BSD
 URL:		http://libmemcached.org/
