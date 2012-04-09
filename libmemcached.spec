@@ -10,13 +10,14 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	1.0.4
+Version:	1.0.5
 Release:	1
 Group:		System/Libraries
 License:	BSD
 URL:		http://libmemcached.org/
 Source0:	http://code.launchpad.net/libmemcached/1.0/%version/+download/%{name}-%{version}-no_hsieh.tar.gz
 Patch0:		libmemcached-1.0.2-no_pandora_print_callstack.diff
+Patch1:		libmemcached-1.0.5-linkage_fix.diff
 BuildRequires:	automake autoconf libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	libevent-devel
@@ -99,6 +100,7 @@ This package contains the static libmemcached library and its header files.
 %setup -q -n %{name}-%{version}
 # clients/ms_sigsegv.c:41: undefined reference to `pandora_print_callstack'
 %patch0 -p0
+%patch1 -p0
 
 # invalid license, according to redhat
 if [ -f libhashkit/hsieh.cc ]; then
@@ -111,6 +113,8 @@ me=`id -nu`
 perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
 %build
+autoreconf -fi
+
 export LIBSASL="-lsasl2"
 export PTHREAD_LIBS="-lpthread"
 
