@@ -10,7 +10,7 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	1.0.8
+Version:	1.0.9
 Release:	1
 Group:		System/Libraries
 License:	BSD
@@ -108,10 +108,6 @@ if [ -f libhashkit/hsieh.cc ]; then
     echo "the libhashkit/hsieh.cc file was found, you have to remove it..."
     exit 1
 fi
-
-# make the tests work
-me=`id -nu`
-perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
 %build
 autoreconf -fi
