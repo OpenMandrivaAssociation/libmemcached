@@ -1,0 +1,11 @@
+--- clients/ms_sigsegv.c	2011-11-05 13:50:14.235386059 +0100
++++ clients/ms_sigsegv.c.oden	2011-11-05 13:50:06.273424921 +0100
+@@ -38,7 +38,7 @@ static void ms_signal_segv(int signum, s
+ 
+   pthread_mutex_lock(&ms_global.quit_mutex);
+   fprintf(stderr, "Segmentation fault occurred.\nStack trace:\n");
+-  pandora_print_callstack(stderr);
++  /* pandora_print_callstack(stderr); */
+   fprintf(stderr, "End of stack trace\n");
+   pthread_mutex_unlock(&ms_global.quit_mutex);
+   abort();

@@ -1,0 +1,11 @@
+--- clients/include.am	2012-03-14 23:24:33.000000000 +0100
++++ clients/include.am.oden	2012-04-09 09:55:44.108511444 +0200
+@@ -98,7 +98,7 @@
+ 			  clients/ms_task.c \
+ 			  clients/ms_thread.c
+ clients_memaslap_SOURCES+= clients/generator.cc clients/execute.cc
+-clients_memaslap_LDADD= $(LTLIBEVENT) $(CLIENTS_LDADDS)
++clients_memaslap_LDADD= $(LIBEVENT_LDFLAGS) $(CLIENTS_LDADDS) -lpthread
+ 
+ clients_memcapable_SOURCES= \
+ 			    clients/memcapable.cc \
