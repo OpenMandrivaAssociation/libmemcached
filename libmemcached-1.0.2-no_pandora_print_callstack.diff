@@ -1,5 +1,5 @@
---- clients/ms_sigsegv.c	2011-11-05 13:50:14.235386059 +0100
-+++ clients/ms_sigsegv.c.oden	2011-11-05 13:50:06.273424921 +0100
+--- libmemcached-old/clients/ms_sigsegv.c	2011-11-05 13:50:14.235386059 +0100
++++ libmemcached-new/clients/ms_sigsegv.c.oden	2011-11-05 13:50:06.273424921 +0100
 @@ -38,7 +38,7 @@ static void ms_signal_segv(int signum, s
  
    pthread_mutex_lock(&ms_global.quit_mutex);
