@@ -40,7 +40,8 @@ memping - Ping a server to see if it is alive
 memrm - Erase a key or set of keys from a memcached cluster
 memslap - Generates a load against a memcached custer of servers
 memstat - Output the state of a memcached cluster
-memtouch - Update the expiration value of an alreasy existing value in the sever
+memtouch - Update the expiration value of an
+alreasy existing value in the sever
 
 %package -n	%{libname}
 Summary:	A memcached C library
