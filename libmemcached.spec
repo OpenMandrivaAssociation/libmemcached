@@ -21,7 +21,7 @@ Patch1:		libmemcached-remove-hsieh.cc.patch
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
-BuildRequires:	libsasl-devel
+BuildRequires:	sasl-devel
 BuildRequires:	pkgconfig(libevent)
 
 %description
