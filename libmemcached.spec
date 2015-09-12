@@ -11,7 +11,7 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	1.0.4
-Release:	11
+Release:	12
 Group:		System/Libraries
 License:	BSD
 Url:		http://libmemcached.org/
