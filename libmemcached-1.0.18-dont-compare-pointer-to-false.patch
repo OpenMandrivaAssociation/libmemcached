@@ -1,0 +1,20 @@
+--- libmemcached-1.0.18/clients/memflush.cc.omv~	2016-09-18 23:41:17.830315977 +0200
++++ libmemcached-1.0.18/clients/memflush.cc	2016-09-18 23:42:05.611673987 +0200
+@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
+ {
+   options_parse(argc, argv);
+ 
+-  if (opt_servers == false)
++  if (!opt_servers || !*opt_servers)
+   {
+     char *temp;
+ 
+@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
+       opt_servers= strdup(temp);
+     }
+ 
+-    if (opt_servers == false)
++    if (!opt_servers || !*opt_servers)
+     {
+       std::cerr << "No Servers provided" << std::endl;
+       exit(EXIT_FAILURE);

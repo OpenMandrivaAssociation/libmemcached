@@ -1,23 +1,21 @@
-%define	major 9
+%define	major 11
 %define	util_major 2
-%define	protocol_major 0
-%define	hashkit_major 1
+%define	hashkit_major 2
 %define libname %mklibname memcached %{major}
 %define util_libname %mklibname memcachedutil %{util_major}
-%define protocol_libname %mklibname memcachedprotocol %{protocol_major}
+%define protocol_libname %mklibname memcachedprotocol 0
 %define hashkit_libname %mklibname memcachedhashkit %{hashkit_major}
 %define devname %mklibname memcached -d
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	1.0.4
-Release:	12
+Version:	1.0.18
+Release:	1
 Group:		System/Libraries
 License:	BSD
 Url:		http://libmemcached.org/
-Source0:	%{name}-%{version}.tar.gz
-Patch0:		libmemcached-1.0.2-no_pandora_print_callstack.diff
-Patch1:		libmemcached-remove-hsieh.cc.patch
+Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
+Patch0:		libmemcached-1.0.18-dont-compare-pointer-to-false.patch
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
@@ -45,6 +43,7 @@ memtouch - Update the expiration value of an alreasy existing value in the
 %package -n	%{libname}
 Summary:	A memcached C library
 Group:          System/Libraries
+Obsoletes:	%{protocol_libname} < %{EVRD}
 
 %description -n	%{libname}
 libmemcached is a C client library to interface to a memcached server. It has
@@ -56,15 +55,6 @@ Summary:	A memcached C library
 Group:          System/Libraries
 
 %description -n	%{util_libname}
-libmemcached is a C client library to interface to a memcached server. It has
-been designed to be light on memory usage, thread safe, and to provide
-full access to server side methods.
-
-%package -n	%{protocol_libname}
-Summary:	A memcached C library
-Group:          System/Libraries
-
-%description -n	%{protocol_libname}
 libmemcached is a C client library to interface to a memcached server. It has
 been designed to be light on memory usage, thread safe, and to provide
 full access to server side methods.
@@ -83,7 +73,6 @@ Summary:	Static library and header files for the libmemcached library
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Requires:	%{util_libname} = %{version}-%{release}
-Requires:	%{protocol_libname} = %{version}-%{release}
 Requires:	%{hashkit_libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
@@ -95,26 +84,26 @@ full access to server side methods.
 This package contains the static libmemcached library and its header files.
 
 %prep
-
 %setup -q
-# clients/ms_sigsegv.c:41: undefined reference to `pandora_print_callstack'
 %apply_patches
-
-# invalid license, according to redhat
-if [ -f libhashkit/hsieh.cc ]; then
-    echo "the libhashkit/hsieh.cc file was found, you have to remove it..."
-    exit 1
-fi
 
 # make the tests work
 me=`id -nu`
 perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
 
+# FIXME building man pages is currently broken
+# disabling them is not the best solution...
+rm man/include.am
+touch man/include.am
+
+[ -e autogen.sh ] && ./autogen.sh
+cp -f %{_datadir}/automake*/install-sh .
+
 %build
 export LIBSASL="-lsasl2"
 export PTHREAD_LIBS="-lpthread"
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--enable-shared \
 	--enable-memaslap \
@@ -152,28 +141,25 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_bindir}/memslap
 %{_bindir}/memstat
 %{_bindir}/memtouch
-%{_mandir}/man1/memcapable.1*
-%{_mandir}/man1/memcat.1*
-%{_mandir}/man1/memcp.1*
-%{_mandir}/man1/memdump.1*
-%{_mandir}/man1/memerror.1*
-%{_mandir}/man1/memflush.1*
-%{_mandir}/man1/memrm.1*
-%{_mandir}/man1/memslap.1*
-%{_mandir}/man1/memaslap.1*
-%{_mandir}/man1/memstat.1*
+%optional %{_mandir}/man1/memcapable.1*
+%optional %{_mandir}/man1/memcat.1*
+%optional %{_mandir}/man1/memcp.1*
+%optional %{_mandir}/man1/memdump.1*
+%optional %{_mandir}/man1/memerror.1*
+%optional %{_mandir}/man1/memflush.1*
+%optional %{_mandir}/man1/memrm.1*
+%optional %{_mandir}/man1/memslap.1*
+%optional %{_mandir}/man1/memaslap.1*
+%optional %{_mandir}/man1/memstat.1*
 
 %files -n %{libname}
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
 %{_libdir}/libmemcached.so.%{major}*
-%{_mandir}/man3/libmemcached.3*
+%optional %{_mandir}/man3/libmemcached.3*
 
 %files -n %{util_libname}
 %{_libdir}/libmemcachedutil.so.%{util_major}*
-%{_mandir}/man3/libmemcachedutil.3*
-
-%files -n %{protocol_libname}
-%{_libdir}/libmemcachedprotocol.so.%{protocol_major}*
+%optional %{_mandir}/man3/libmemcachedutil.3*
 
 %files -n %{hashkit_libname}
 %{_libdir}/libhashkit.so.%{hashkit_major}*
@@ -183,17 +169,16 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %dir %{_includedir}/libhashkit-1.0
 %dir %{_includedir}/libmemcached
 %dir %{_includedir}/libmemcached-1.0
-%dir %{_includedir}/libmemcachedprotocol-0.0
 %dir %{_includedir}/libmemcachedutil-1.0
 %{_includedir}/libhashkit/*
 %{_includedir}/libhashkit-1.0/*
 %{_includedir}/libmemcached/*
 %{_includedir}/libmemcached-1.0/*
-%{_includedir}/libmemcachedprotocol-0.0/*
 %{_includedir}/libmemcachedutil-1.0/*
+%{_datadir}/aclocal/ax_libmemcached.m4
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
-%exclude %{_mandir}/man3/libmemcached.3*
-%exclude %{_mandir}/man3/libmemcachedutil.3*
-%{_mandir}/man3/*
+#exclude %{_mandir}/man3/libmemcached.3*
+#exclude %{_mandir}/man3/libmemcachedutil.3*
+%optional %{_mandir}/man3/*
 
