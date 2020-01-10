@@ -85,7 +85,7 @@ This package contains the static libmemcached library and its header files.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 # make the tests work
 me=`id -nu`
