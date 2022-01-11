@@ -6,6 +6,9 @@
 %define protocol_libname %mklibname memcachedprotocol 0
 %define hashkit_libname %mklibname memcachedhashkit %{hashkit_major}
 %define devname %mklibname memcached -d
+# Dodgy 32BIT symbols
+%define  _disable_lto 1   Disable link time optimisation.
+
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
@@ -102,8 +105,9 @@ cp -f %{_datadir}/automake*/install-sh .
 %build
 export LIBSASL="-lsasl2"
 export PTHREAD_LIBS="-lpthread"
-
+# Cheat a bit with LDFLAGS
 %configure \
+	LDFLAGS=-Wl,--allow-multiple-definition \
 	--disable-static \
 	--enable-shared \
 	--enable-memaslap \
