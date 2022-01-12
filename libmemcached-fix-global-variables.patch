@@ -1,0 +1,34 @@
+diff -up libmemcached-1.0.18/clients/memaslap.c.omv~ libmemcached-1.0.18/clients/memaslap.c
+--- libmemcached-1.0.18/clients/memaslap.c.omv~	2022-01-12 01:27:48.892628443 +0100
++++ libmemcached-1.0.18/clients/memaslap.c	2022-01-12 01:28:12.395739152 +0100
+@@ -45,6 +45,10 @@
+ #define OPTIONSTRING const char*
+ #endif
+ 
++ms_global_t ms_global;
++ms_stats_t ms_stats;
++ms_statistic_t ms_statistic;
++
+ /* options */
+ static struct option long_options[]=
+ {
+diff -up libmemcached-1.0.18/clients/ms_memslap.h.omv~ libmemcached-1.0.18/clients/ms_memslap.h
+--- libmemcached-1.0.18/clients/ms_memslap.h.omv~	2022-01-12 01:25:26.755958208 +0100
++++ libmemcached-1.0.18/clients/ms_memslap.h	2022-01-12 01:27:36.150568410 +0100
+@@ -117,13 +117,13 @@ typedef struct global
+ } ms_global_t;
+ 
+ /* global structure */
+-ms_global_t ms_global;
++extern ms_global_t ms_global;
+ 
+ /* global stats information structure */
+-ms_stats_t ms_stats;
++extern ms_stats_t ms_stats;
+ 
+ /* global statistic structure */
+-ms_statistic_t ms_statistic;
++extern ms_statistic_t ms_statistic;
+ 
+ #ifdef __cplusplus
+ }

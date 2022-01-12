@@ -10,12 +10,14 @@
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
 Version:	1.0.18
-Release:	3
+Release:	4
 Group:		System/Libraries
 License:	BSD
 Url:		http://libmemcached.org/
 Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
 Patch0:		libmemcached-1.0.18-dont-compare-pointer-to-false.patch
+# Fix build with compilers that default to -fno-common
+Patch1:		libmemcached-fix-global-variables.patch
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
