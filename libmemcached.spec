@@ -19,6 +19,8 @@ Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcache
 # Fix build with compilers that default to -fno-common
 #Patch1:		libmemcached-fix-global-variables.patch
 BuildRequires:	cmake
+BuildRequires:        bison
+BuildRequires:        flex
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
