@@ -18,6 +18,7 @@ Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcache
 #Patch0:		libmemcached-1.0.18-dont-compare-pointer-to-false.patch
 # Fix build with compilers that default to -fno-common
 #Patch1:		libmemcached-fix-global-variables.patch
+BuildRequires:	cmake
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
@@ -89,39 +90,12 @@ This package contains the static libmemcached library and its header files.
 %setup -q
 %autopatch -p1
 
-# make the tests work
-me=`id -nu`
-perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
-
-# FIXME building man pages is currently broken
-# disabling them is not the best solution...
-rm man/include.am
-touch man/include.am
-
-[ -e autogen.sh ] && ./autogen.sh
-cp -f %{_datadir}/automake*/install-sh .
-
 %build
-export LIBSASL="-lsasl2"
-export PTHREAD_LIBS="-lpthread"
+%cmake
 
-%configure \
-	--disable-static \
-	--enable-shared \
-	--enable-memaslap \
-	--with-memcached=%{_bindir}/memcached \
-	--with-memcached_sasl=%{_bindir}/memcached
-
-%make LIBSASL="-lsasl2" PTHREAD_LIBS="-lpthread"
-
-# (oe ) barfs at:
-# Assertion failed in tests/mem_functions.c:5946: rc == MEMCACHED_TIMEOUT
-#%%check
-#make test
-
+%make_build
 %install
-# weird makefile poo
-make DESTDIR=%{buildroot} install-exec-am install-data-am
+%make_install -C build
 
 # (oe) avoid pulling 32 bit libraries on 64 bit arch
 %if "%{_lib}" == "lib64"
