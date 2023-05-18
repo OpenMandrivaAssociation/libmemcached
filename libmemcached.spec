@@ -9,15 +9,17 @@
 
 Summary:	A memcached C library and command line tools
 Name:		libmemcached
-Version:	1.0.18
-Release:	5
+Version:	1.1.4
+Release:	1
 Group:		System/Libraries
 License:	BSD
 Url:		http://libmemcached.org/
-Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
-Patch0:		libmemcached-1.0.18-dont-compare-pointer-to-false.patch
-# Fix build with compilers that default to -fno-common
-Patch1:		libmemcached-fix-global-variables.patch
+Source0:   https://github.com/awesomized/libmemcached/archive/refs/tags/%{version}/%{name}-%{version}.tar.gz           
+#Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
+
+BuildRequires:	cmake
+BuildRequires:        bison
+BuildRequires:        flex
 BuildRequires:	libtool
 BuildRequires:	memcached >= 1.4.9
 BuildRequires:	perl-devel
@@ -89,46 +91,23 @@ This package contains the static libmemcached library and its header files.
 %setup -q
 %autopatch -p1
 
-# make the tests work
-me=`id -nu`
-perl -pi -e "s|-u root|-u $me|g" Makefile* tests/include.am tests/server.c
-
-# FIXME building man pages is currently broken
-# disabling them is not the best solution...
-rm man/include.am
-touch man/include.am
-
-[ -e autogen.sh ] && ./autogen.sh
-cp -f %{_datadir}/automake*/install-sh .
-
 %build
-export LIBSASL="-lsasl2"
-export PTHREAD_LIBS="-lpthread"
+%cmake
 
-%configure \
-	--disable-static \
-	--enable-shared \
-	--enable-memaslap \
-	--with-memcached=%{_bindir}/memcached \
-	--with-memcached_sasl=%{_bindir}/memcached
-
-%make LIBSASL="-lsasl2" PTHREAD_LIBS="-lpthread"
-
-# (oe ) barfs at:
-# Assertion failed in tests/mem_functions.c:5946: rc == MEMCACHED_TIMEOUT
-#%%check
-#make test
-
+%make_build
 %install
-# weird makefile poo
-make DESTDIR=%{buildroot} install-exec-am install-data-am
+%make_install -C build
 
 # (oe) avoid pulling 32 bit libraries on 64 bit arch
 %if "%{_lib}" == "lib64"
 sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %endif
 
+# Remove unwanted file          
+rm -f %{buildroot}%{_libdir}/libp9y.a           
+
 %files
+%doc %{_datadir}/doc/libmemcached-awesome/
 %{_bindir}/memaslap
 %{_bindir}/memcapable
 %{_bindir}/memcat
@@ -143,20 +122,12 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_bindir}/memslap
 %{_bindir}/memstat
 %{_bindir}/memtouch
-%optional %{_mandir}/man1/memcapable.1*
-%optional %{_mandir}/man1/memcat.1*
-%optional %{_mandir}/man1/memcp.1*
-%optional %{_mandir}/man1/memdump.1*
-%optional %{_mandir}/man1/memerror.1*
-%optional %{_mandir}/man1/memflush.1*
-%optional %{_mandir}/man1/memrm.1*
-%optional %{_mandir}/man1/memslap.1*
-%optional %{_mandir}/man1/memaslap.1*
-%optional %{_mandir}/man1/memstat.1*
+%{_datadir}/libmemcached-awesome/example.cnf           
 
 %files -n %{libname}
-%doc AUTHORS COPYING ChangeLog NEWS README TODO
+%doc AUTHORS COPYING ChangeLog NEWS README* TODO
 %{_libdir}/libmemcached.so.%{major}*
+%{_libdir}/libmemcachedprotocol.so.0*  
 %optional %{_mandir}/man3/libmemcached.3*
 
 %files -n %{util_libname}
@@ -172,6 +143,7 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %dir %{_includedir}/libmemcached
 %dir %{_includedir}/libmemcached-1.0
 %dir %{_includedir}/libmemcachedutil-1.0
+%{_includedir}/libmemcachedprotocol-0.0/           
 %{_includedir}/libhashkit/*
 %{_includedir}/libhashkit-1.0/*
 %{_includedir}/libmemcached/*
@@ -180,6 +152,7 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_datadir}/aclocal/ax_libmemcached.m4
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
+%{_libdir}/cmake/libmemcached-awesome/
 #exclude %{_mandir}/man3/libmemcached.3*
 #exclude %{_mandir}/man3/libmemcachedutil.3*
 %optional %{_mandir}/man3/*
