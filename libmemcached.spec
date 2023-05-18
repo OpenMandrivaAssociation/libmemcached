@@ -14,10 +14,9 @@ Release:	1
 Group:		System/Libraries
 License:	BSD
 Url:		http://libmemcached.org/
-Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
-#Patch0:		libmemcached-1.0.18-dont-compare-pointer-to-false.patch
-# Fix build with compilers that default to -fno-common
-#Patch1:		libmemcached-fix-global-variables.patch
+Source0:   https://github.com/awesomized/libmemcached/archive/refs/tags/%{version}/%{name}-%{version}.tar.gz           
+#Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
+
 BuildRequires:	cmake
 BuildRequires:        bison
 BuildRequires:        flex
@@ -104,7 +103,11 @@ This package contains the static libmemcached library and its header files.
 sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %endif
 
+# Remove unwanted file          
+rm -f %{buildroot}%{_libdir}/libp9y.a           
+
 %files
+%doc %{_datadir}/doc/libmemcached-awesome/
 %{_bindir}/memaslap
 %{_bindir}/memcapable
 %{_bindir}/memcat
@@ -119,10 +122,12 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_bindir}/memslap
 %{_bindir}/memstat
 %{_bindir}/memtouch
+%{_datadir}/libmemcached-awesome/example.cnf           
 
 %files -n %{libname}
 %doc AUTHORS COPYING ChangeLog NEWS README* TODO
 %{_libdir}/libmemcached.so.%{major}*
+%{_libdir}/libmemcachedprotocol.so.0*  
 %optional %{_mandir}/man3/libmemcached.3*
 
 %files -n %{util_libname}
@@ -138,6 +143,7 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %dir %{_includedir}/libmemcached
 %dir %{_includedir}/libmemcached-1.0
 %dir %{_includedir}/libmemcachedutil-1.0
+%{_includedir}/libmemcachedprotocol-0.0/           
 %{_includedir}/libhashkit/*
 %{_includedir}/libhashkit-1.0/*
 %{_includedir}/libmemcached/*
@@ -146,6 +152,7 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_datadir}/aclocal/ax_libmemcached.m4
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
+%{_libdir}/cmake/libmemcached-awesome/
 #exclude %{_mandir}/man3/libmemcached.3*
 #exclude %{_mandir}/man3/libmemcachedutil.3*
 %optional %{_mandir}/man3/*
