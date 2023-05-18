@@ -119,19 +119,9 @@ sed -i -e "s|-L/usr/lib\b|-L%{_libdir}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
 %{_bindir}/memslap
 %{_bindir}/memstat
 %{_bindir}/memtouch
-%optional %{_mandir}/man1/memcapable.1*
-%optional %{_mandir}/man1/memcat.1*
-%optional %{_mandir}/man1/memcp.1*
-%optional %{_mandir}/man1/memdump.1*
-%optional %{_mandir}/man1/memerror.1*
-%optional %{_mandir}/man1/memflush.1*
-%optional %{_mandir}/man1/memrm.1*
-%optional %{_mandir}/man1/memslap.1*
-%optional %{_mandir}/man1/memaslap.1*
-%optional %{_mandir}/man1/memstat.1*
 
 %files -n %{libname}
-%doc AUTHORS COPYING ChangeLog NEWS README TODO
+%doc AUTHORS COPYING ChangeLog NEWS README* TODO
 %{_libdir}/libmemcached.so.%{major}*
 %optional %{_mandir}/man3/libmemcached.3*
 
