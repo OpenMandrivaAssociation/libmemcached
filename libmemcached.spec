@@ -13,7 +13,7 @@ Version:	1.1.4
 Release:	1
 Group:		System/Libraries
 License:	BSD
-Url:		http://libmemcached.org/
+Url:		https://libmemcached.org/
 Source0:   https://github.com/awesomized/libmemcached/archive/refs/tags/%{version}/%{name}-%{version}.tar.gz           
 #Source0:	https://launchpad.net/libmemcached/1.0/%{version}/+download/libmemcached-%{version}.tar.gz
 
